@@ -1,0 +1,7 @@
+
+# -*-Shell-script-*-
+alias vera="ssh vera"
+alias verapi="ssh verapi"
+
+# https://coderwall.com/p/cwemfg/sane-path-building-while-reloading-profile
+path_add "{{veradev_path}}/bin"

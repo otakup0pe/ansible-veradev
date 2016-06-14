@@ -1,0 +1,24 @@
+- name: create directories
+  file:
+    path: "{{item}}"
+    owner: "{{veradev_user}}"
+    group: "{{veradev_group}}"
+    mode: 0770
+    state: directory
+  with_items:
+  - "{{veradev_path}}/bin"
+- name: veradev profile hook
+  template:
+    src: "veradev-profile"
+    dest: "{{dotfile_home_prefix}}/{{dotfile_user}}/.veradev"
+    owner: "{{dotfile_user}}"
+    group: "{{dotfile_group}}"
+    mode: 0600
+- name: copy scripts
+  copy:
+    src: "{{item}}.sh"
+    dest: "{{veradev_path}}/bin/{{item}}"
+    owner: "{{veradev_user}}"
+    group: "{{veradev_group}}"
+    mode: 0700
+  with_items: "{{veradev_scripts}}"

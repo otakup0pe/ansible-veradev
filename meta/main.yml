@@ -1,0 +1,10 @@
+galaxy_info:
+  author: Jonathan Freedman
+  description: configure a dev env for mios/vera
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+dependencies: []
