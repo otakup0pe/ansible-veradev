@@ -5,3 +5,6 @@ alias verapi="ssh verapi"
 
 # https://coderwall.com/p/cwemfg/sane-path-building-while-reloading-profile
 path_add "{{veradev_path}}/bin"
+
+export LUA_PATH="{{veradev_path}}/tmp/dkjson.lua"
+export VERA_HOST="{{veradev_host|default('vera')}}"

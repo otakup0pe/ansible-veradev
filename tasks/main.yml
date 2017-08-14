@@ -7,13 +7,16 @@
     state: directory
   with_items:
   - "{{veradev_path}}/bin"
+  - "{{veradev_path}}/tmp"
+  when: '"veradev" in dotfile_contexts'
 - name: veradev profile hook
   template:
     src: "veradev-profile"
-    dest: "{{dotfile_home_prefix}}/{{dotfile_user}}/.veradev"
-    owner: "{{dotfile_user}}"
-    group: "{{dotfile_group}}"
+    dest: "{{veradev_hook_path}}/.veradev"
+    owner: "{{veradev_user}}"
+    group: "{{veradev_group}}"
     mode: 0600
+  when: '"veradev" in dotfile_contexts'
 - name: copy scripts
   copy:
     src: "{{item}}.sh"
@@ -22,3 +25,12 @@
     group: "{{veradev_group}}"
     mode: 0700
   with_items: "{{veradev_scripts}}"
+  when: '"veradev" in dotfile_contexts'
+- name: mirror dkjson
+  get_url:
+    url: "https://raw.githubusercontent.com/LuaDist/dkjson/master/dkjson.lua"
+    dest: "{{veradev_path}}/tmp/dkjson.lua"
+    owner: "{{veradev_user}}"
+    group: "{{veradev_group}}"
+    mode: 0600
+  when: '"veradev" in dotfile_contexts'
