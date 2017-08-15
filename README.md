@@ -18,4 +18,4 @@ Will tail the LUA engine log on your vera. You will need passwordless ssh.
 
 # author
 
-These bytes were manifested by [Jonathan Freedman](http://jonathanfreedman.bio/).
+These bytes were manifested by [Jonathan Freedman](http://jonathanfreedman.bio/) who still believes the smart home is a myth.

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set  -e
-function reload {
+
+reload_vera() {
+    curl "http://${VERA_HOST}:3480/data_request?id=reload"
+}
+reload() {
     cd "${DIR}" || exit 1
     if [ -z "$SKIP_TEST" ] ; then
         lua ./*.lua || exit 1
@@ -13,15 +17,29 @@ function reload {
             done
         fi
     fi
-    scp ./* vera:/etc/cmh-ludl/ && \
-        curl "http://${VERA_HOST}:3480/data_request?id=reload" || exit 1
+    scp ./* vera:/etc/cmh-ludl/
+    reload_vera
 }
+RELOAD_ONLY=""
+while getopts "r" arg; do
+    case $arg in
+        r)
+            RELOAD_ONLY="ayy"
+            ;;
+    esac
+done
+if [ ! -z "$RELOAD_ONLY" ] ; then
+    reload_vera
+    exit 0
+fi
 
 if [ $# == 1 ] ; then
     DIR="$1"
+    shift
 else
     DIR="$(pwd)"
 fi
+
 if [ -d "${DIR}/plugin" ] ; then
     DIR="${DIR}/plugin"
 fi
@@ -29,12 +47,12 @@ if ! ls "$DIR"/*.lua &> /dev/null ; then
     echo "no lua files in ${DIR}"
     exit 1
 fi
+
 OWD=$(pwd)
 while true ; do
     dialog --yesno "$(basename ${DIR})\nDeploy that sweet\nsweet\nlua\n\n?" 10 30
     if [ $? == 0 ] ; then
-        reload
-        
+        reload        
     else
         cd "$OWD" || exit 1
         exit 0
