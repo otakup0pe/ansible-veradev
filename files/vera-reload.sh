@@ -40,8 +40,11 @@ else
     DIR="$(pwd)"
 fi
 
+TITLE="$DIR"
 if [ -d "${DIR}/plugin" ] ; then
     DIR="${DIR}/plugin"
+    TITLE="$(dirname "$DIR")"
+    TITLE="$(basename "$TITLE")"
 fi
 if ! ls "$DIR"/*.lua &> /dev/null ; then
     echo "no lua files in ${DIR}"
@@ -50,7 +53,7 @@ fi
 
 OWD=$(pwd)
 while true ; do
-    dialog --yesno "$(basename ${DIR})\nDeploy that sweet\nsweet\nlua\n\n?" 10 30
+    dialog --yesno "${TITLE}\nDeploy that sweet\nsweet\nlua\n\n?" 10 30
     if [ $? == 0 ] ; then
         reload        
     else
